@@ -20,7 +20,7 @@ public final class PasswordHasher {
         return salt;
     }
 
-    /** Primary API: hash a char[] password. Does not zero the input. Caller owns lifetime */
+    /** Primary API */
     public static String hash(char[] rawPassword, byte[] salt) {
         if (rawPassword == null || salt == null) {
             throw new IllegalArgumentException("password and salt must not be null");
@@ -39,13 +39,13 @@ public final class PasswordHasher {
         }
     }
 
-    /** Overload kept for those using password as String */
+
     public static String hash(String rawPassword, byte[] salt) {
         if (rawPassword == null) throw new IllegalArgumentException("password must not be null");
         return hash(rawPassword.toCharArray(), salt);
     }
 
-    /** Constant-time verification; prefers char[] to prevent interning raw password */
+   
     public static boolean verify(char[] rawPassword, byte[] salt, String expectedHash) {
         if (rawPassword == null || salt == null || expectedHash == null) return false;
         String actual = hash(rawPassword, salt);
