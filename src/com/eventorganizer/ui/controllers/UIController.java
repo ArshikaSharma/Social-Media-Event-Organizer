@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Thin facade over the seven services. Every UI action funnels through here so
- * screens never touch DataStore or services directly, and exceptions translate
- * into toasts at a single seam (callers wrap calls in try/catch(AppException)).
+ * Every UI action funnels through here
+ * DataStore or services are not directly touched
+ * Exception translated into toasts at a single seam
  */
 public class UIController {
 
@@ -39,7 +39,6 @@ public class UIController {
     private final NotificationService notifSvc = new NotificationService();
     private final ReportService reportSvc = new ReportService();
 
-    /* ---------- auth ---------- */
 
     public User register(String username, String email, char[] password) {
         return userSvc.register(username, email, password);
@@ -53,7 +52,6 @@ public class UIController {
 
     public User currentUser() { return DataStore.INSTANCE.getCurrentUser(); }
 
-    /* ---------- profile ---------- */
 
     public UserProfileDTO getProfile() {
         return userSvc.getProfile(userSvc.requireCurrentUser());
@@ -67,7 +65,6 @@ public class UIController {
         userSvc.changePassword(oldPw, newPw);
     }
 
-    /* ---------- events ---------- */
 
     public CreateEventResult createEvent(String name, String desc, LocalDateTime when,
                                          String location, EventType type) {
@@ -87,8 +84,7 @@ public class UIController {
     public List<Event> myPast()       { return eventSvc.viewPast(); }
 
     public Event viewEvent(String id) { return eventSvc.viewEventDetails(id); }
-
-    /* ---------- invitations ---------- */
+    
 
     public Invitation inviteFriend(String eventId, String username) {
         return inviteSvc.inviteFriend(eventId, username);
@@ -110,7 +106,6 @@ public class UIController {
         return inviteSvc.eventsWithPendingInvitationsFor(userSvc.requireCurrentUser());
     }
 
-    /* ---------- rsvp ---------- */
 
     public void respondRSVP(String eventId, RSVPStatus status) {
         rsvpSvc.respond(eventId, status);
@@ -120,7 +115,6 @@ public class UIController {
         return rsvpSvc.viewRSVPSummary(eventId);
     }
 
-    /* ---------- friends ---------- */
 
     public FriendRequest sendFriendRequest(String username) {
         return friendSvc.sendFriendRequest(username);
@@ -134,20 +128,17 @@ public class UIController {
     public List<User> friends()                { return friendSvc.listFriends(); }
     public List<FriendRequest> incomingReqs()  { return friendSvc.listIncomingRequests(); }
 
-    /* ---------- notifications ---------- */
 
     public List<Notification> notifications()       { return notifSvc.getAllForCurrentUser(); }
     public List<Notification> unreadNotifications() { return notifSvc.getUnreadForCurrentUser(); }
     public int unreadCount()                        { return notifSvc.countUnread(); }
     public void markAllRead()                       { notifSvc.markAllRead(); }
 
-    /* ---------- reports ---------- */
 
     public UserActivityReport activity() {
         return reportSvc.buildUserActivity(userSvc.requireCurrentUser());
     }
 
-    /* ---------- helper ---------- */
 
     public User lookupUser(String userId) {
         return DataStore.INSTANCE.findUserById(userId).orElse(null);
