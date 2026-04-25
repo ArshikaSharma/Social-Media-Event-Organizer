@@ -62,7 +62,7 @@ public final class PasswordHasher {
         return verify(rawPassword.toCharArray(), salt, expectedHash);
     }
 
-    /** Constant time byte-for-byte equality of 2 digests */
+   
     public static boolean constantTimeEquals(byte[] a, byte[] b) {
         return MessageDigest.isEqual(a, b);
     }
