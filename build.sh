@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+
 set -euo pipefail
 cd "$(dirname "$0")"
-# Windows Java needs ';' as classpath separator; Unix uses ':'.
+
 case "$(uname -s 2>/dev/null || echo unknown)" in
     MINGW*|MSYS*|CYGWIN*) SEP=";" ;;
     *) SEP=":" ;;
